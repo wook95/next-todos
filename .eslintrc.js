@@ -9,7 +9,7 @@ module.exports = {
       node: {
         moduleDirectory: ['node_modules', 'src/'],
         paths: ['src'],
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts'],
       },
     },
   },
