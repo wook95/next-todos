@@ -13,5 +13,5 @@ const Home: NextPage = () => {
 export default Home;
 
 const Container = styled.div`
-  /* background-color: tomato; */
+  width: 100%;
 `;

@@ -30,6 +30,9 @@ const Container = styled.div`
   width: 100%;
 `;
 const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 12px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
   font-size: 15px;
