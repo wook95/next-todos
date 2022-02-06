@@ -1,3 +1,4 @@
+import { ReactChildren } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -15,7 +16,8 @@ const StyledContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  width: 650px;
+  max-width: 650px;
+  width: 100%;
   height: 100vh;
 `;
 

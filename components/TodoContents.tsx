@@ -1,5 +1,7 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { TodoType } from '../types/todo';
+import TrashCanIcon from '../public/static/svg/trash-can.svg';
+import CheckMarkIcon from '../public/static/svg/check-mark.svg';
 
 interface ITodo {
   todos: TodoType[];
@@ -22,6 +24,26 @@ const TodoContents = ({ todos }: ITodo) => {
           ))}
         </Colors>
       </Header>
+      <Contents>
+        {todos.map(todo => (
+          <ContentsItem key={todo.id}>
+            <ContentLeft>
+              <ColorBlock backGroundColor={todo.color} />
+              <TodoText checked={todo.checked}>{todo.text}</TodoText>
+            </ContentLeft>
+            <ContentsRight>
+              {todo.checked ? (
+                <>
+                  <TrashCan />
+                  <CheckedMark />
+                </>
+              ) : (
+                <CheckButton onClick={() => {}} />
+              )}
+            </ContentsRight>
+          </ContentsItem>
+        ))}
+      </Contents>
     </Container>
   );
 };
@@ -67,6 +89,71 @@ const ColorWord = styled.p`
   margin: 0 6px 0 0;
   font-size: 14px;
   line-height: 16px;
+`;
+
+const Contents = styled.ul``;
+
+const ContentsItem = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 52px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
+`;
+
+const ContentLeft = styled.div`
+  display: flex;
+  flex: 1;
+  height: 100%;
+  align-items: center;
+`;
+
+const ColorBlock = styled.div<{ backGroundColor: string }>`
+  width: 12px;
+  height: 100%;
+  background-color: ${({ theme, backGroundColor }) =>
+    theme.colors[backGroundColor]};
+`;
+
+const TodoText = styled.p<{ checked: boolean }>`
+  margin-left: 12px;
+  ${({ theme, checked }) =>
+    checked &&
+    `
+      color: ${theme.colors.gray};
+      text-decoration: line-through;
+    `};
+`;
+
+const ContentsRight = styled.div`
+  display: flex;
+  margin-left: 12px;
+  & > * + * {
+    margin-left: 15px;
+  }
+`;
+
+const TrashCan = styled(TrashCanIcon)`
+  path {
+    fill: ${({ theme }) => theme.colors.green_2};
+  }
+`;
+
+const CheckedMark = styled(CheckMarkIcon)`
+  position: relative;
+  left: 2px;
+
+  fill: ${({ theme }) => theme.colors.green_2};
+`;
+
+const CheckButton = styled.button`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #bababa;
+  background-color: transparent;
+  outline: none;
 `;
 
 type ObjectIndexType = {
