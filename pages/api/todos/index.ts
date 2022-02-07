@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { TodoType } from '../../types/todo';
+import todoDataObject from '../../../lib/data';
+import { TodoType } from '../../../types/todo';
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,14 +9,9 @@ export default async function handler(
 ) {
   if (req.method === 'GET') {
     try {
-      const todos = readFileSync('data/todos.json').toString();
-      if (!todos) {
-        res.statusCode = 200;
-        res.send([]);
-      }
+      const todos = todoDataObject.getTodoList();
       res.statusCode = 200;
-      const returnTodo: TodoType[] = JSON.parse(todos);
-      res.send(returnTodo);
+      res.send(todos);
     } catch (e) {
       console.log(e);
       res.statusCode = 500;

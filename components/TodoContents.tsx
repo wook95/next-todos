@@ -1,31 +1,73 @@
+import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { TodoType } from '../types/todo';
 import TrashCanIcon from '../public/static/svg/trash-can.svg';
 import CheckMarkIcon from '../public/static/svg/check-mark.svg';
+import { checkTodoAPI } from '../lib/api/todo';
 
 interface ITodo {
   todos: TodoType[];
 }
 
+type ObjectIndexType = {
+  [key: string]: number | undefined;
+};
+
 const TodoContents = ({ todos }: ITodo) => {
+  const [localTodo, setLocalTodo] = useState(todos);
+
+  const checkTodo = async (id: number) => {
+    try {
+      await checkTodoAPI(id);
+      console.log('체크완료');
+      const newTodos = localTodo.map(todo => {
+        if (todo.id === id) {
+          return { ...todo, checked: !todo.checked };
+        }
+        return todo;
+      });
+      setLocalTodo(newTodos);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getTodoColors = (myTodos: TodoType[]) => {
+    const colors: ObjectIndexType = {
+      red: 0,
+      orange: 0,
+      yellow: 0,
+      green: 0,
+      blue: 0,
+      navy: 0,
+    };
+
+    myTodos?.forEach(todo => {
+      const value = colors[todo.color];
+      if (!value) colors[todo.color] = 1;
+      else colors[todo.color] = value + 1;
+    });
+    return colors;
+  };
+
   return (
     <Container>
       <Header>
         <Title>
           남은 TODO
-          <LastTodo> {todos?.length} </LastTodo>
+          <LastTodo> {localTodo?.length} </LastTodo>
         </Title>
         <Colors>
-          {Object.keys(getTodoColors(todos)).map(color => (
+          {Object.keys(getTodoColors(localTodo)).map(color => (
             <ColorWrapper key={color}>
               <ColorCircle circleColor={color} />
-              <ColorWord> {getTodoColors(todos)[color]}</ColorWord>
+              <ColorWord> {getTodoColors(localTodo)[color]}</ColorWord>
             </ColorWrapper>
           ))}
         </Colors>
       </Header>
       <Contents>
-        {todos?.map(todo => (
+        {localTodo?.map(todo => (
           <ContentsItem key={todo.id}>
             <ContentLeft>
               <ColorBlock backGroundColor={todo.color} />
@@ -35,10 +77,10 @@ const TodoContents = ({ todos }: ITodo) => {
               {todo.checked ? (
                 <>
                   <TrashCan />
-                  <CheckedMark />
+                  <CheckedMark onClick={() => checkTodo(todo.id)} />
                 </>
               ) : (
-                <CheckButton onClick={() => {}} />
+                <CheckButton onClick={() => checkTodo(todo.id)} />
               )}
             </ContentsRight>
           </ContentsItem>
@@ -155,27 +197,5 @@ const CheckButton = styled.button`
   background-color: transparent;
   outline: none;
 `;
-
-type ObjectIndexType = {
-  [key: string]: number | undefined;
-};
-
-const getTodoColors = (todos: TodoType[]) => {
-  const colors: ObjectIndexType = {
-    red: 0,
-    orange: 0,
-    yellow: 0,
-    green: 0,
-    blue: 0,
-    navy: 0,
-  };
-
-  todos?.forEach(todo => {
-    const value = colors[todo.color];
-    if (!value) colors[todo.color] = 1;
-    else colors[todo.color] = value + 1;
-  });
-  return colors;
-};
 
 export default TodoContents;
