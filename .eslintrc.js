@@ -46,5 +46,6 @@ module.exports = {
     'arrow-body-style': 0,
     'react/function-component-definition': 0,
     'no-undef': 0,
+    'import/prefer-default-export': 0,
   },
 };

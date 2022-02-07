@@ -13,7 +13,7 @@ const TodoContents = ({ todos }: ITodo) => {
       <Header>
         <Title>
           남은 TODO
-          <LastTodo> {todos.length} </LastTodo>
+          <LastTodo> {todos?.length} </LastTodo>
         </Title>
         <Colors>
           {Object.keys(getTodoColors(todos)).map(color => (
@@ -25,7 +25,7 @@ const TodoContents = ({ todos }: ITodo) => {
         </Colors>
       </Header>
       <Contents>
-        {todos.map(todo => (
+        {todos?.map(todo => (
           <ContentsItem key={todo.id}>
             <ContentLeft>
               <ColorBlock backGroundColor={todo.color} />
@@ -170,7 +170,7 @@ const getTodoColors = (todos: TodoType[]) => {
     navy: 0,
   };
 
-  todos.forEach(todo => {
+  todos?.forEach(todo => {
     const value = colors[todo.color];
     if (!value) colors[todo.color] = 1;
     else colors[todo.color] = value + 1;
