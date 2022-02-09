@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { TodoType } from '../types/todo';
 import TrashCanIcon from '../public/static/svg/trash-can.svg';
 import CheckMarkIcon from '../public/static/svg/check-mark.svg';
 import { checkTodoAPI } from '../lib/api/todo';
+import { COLORS } from '../constants/colors';
 
 interface ITodo {
   todos: TodoType[];
 }
 
-type ObjectIndexType = {
+type ColorToNumberType = {
   [key: string]: number | undefined;
 };
 
@@ -33,14 +34,10 @@ const TodoContents = ({ todos }: ITodo) => {
   };
 
   const getTodoColors = (myTodos: TodoType[]) => {
-    const colors: ObjectIndexType = {
-      red: 0,
-      orange: 0,
-      yellow: 0,
-      green: 0,
-      blue: 0,
-      navy: 0,
-    };
+    const colors = COLORS.reduce((target: ColorToNumberType, key) => {
+      target[key] = 0;
+      return target;
+    }, {});
 
     myTodos?.forEach(todo => {
       const value = colors[todo.color];
