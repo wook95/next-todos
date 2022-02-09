@@ -110,6 +110,7 @@ const LastTodo = styled.p`
 
 const Colors = styled.div`
   display: flex;
+  margin-bottom: 15px;
 `;
 
 const ColorWrapper = styled.div`
