@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import CenteredContainer from '../components/CenteredContainer';
 import GlobalStyle from '../styles/GlobalStyle';
 import theme from '../styles/theme';
+import Footer from '../components/Footer';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -13,6 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <CenteredContainer>
           <Header />
           <Component {...pageProps} />
+          <Footer />
         </CenteredContainer>
       </ThemeProvider>
     </>
