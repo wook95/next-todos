@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { TodoType } from '../types/todo';
 import TrashCanIcon from '../public/static/svg/trash-can.svg';
 import CheckMarkIcon from '../public/static/svg/check-mark.svg';
-import { checkTodoAPI } from '../lib/api/todo';
+import { checkTodoAPI, deleteTodoAPI } from '../lib/api/todo';
 import { COLORS } from '../constants/colors';
 
 interface ITodo {
@@ -47,6 +47,17 @@ const TodoContents = ({ todos }: ITodo) => {
     return colors;
   };
 
+  const deleteTodo = async (id: number) => {
+    try {
+      await deleteTodoAPI(id);
+      const newTodos = localTodo.filter(todo => todo.id !== id);
+      setLocalTodo(newTodos);
+      console.log('삭제 완료');
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -73,7 +84,7 @@ const TodoContents = ({ todos }: ITodo) => {
             <ContentsRight>
               {todo.checked ? (
                 <>
-                  <TrashCan />
+                  <TrashCan onClick={() => deleteTodo(todo.id)} />
                   <CheckedMark onClick={() => checkTodo(todo.id)} />
                 </>
               ) : (
@@ -178,11 +189,13 @@ const TrashCan = styled(TrashCanIcon)`
   path {
     fill: ${({ theme }) => theme.colors.green_2};
   }
+  cursor: pointer;
 `;
 
 const CheckedMark = styled(CheckMarkIcon)`
   position: relative;
   left: 2px;
+  cursor: pointer;
 
   fill: ${({ theme }) => theme.colors.green_2};
 `;
@@ -194,6 +207,7 @@ const CheckButton = styled.button`
   border: 1px solid #bababa;
   background-color: transparent;
   outline: none;
+  cursor: pointer;
 `;
 
 export default TodoContents;
